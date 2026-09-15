@@ -10,7 +10,7 @@ enum Mode {
 
 static func create(text:String, _mode:Mode=Mode.FULL, print_err:bool=false):
 	if ClassDB.class_exists("StringMapNative"):
-		return StringMapNative.create(text, _mode, print_err)
+		return ClassDB.class_call_static("StringMapNative", "create", text, _mode, print_err)
 	else:
 		return new(text, _mode, print_err)
 
