@@ -1,6 +1,6 @@
 #! namespace UtilR.Files class GetFiles
 
-const SELF = preload("res://addons/addon_lib/brohd/alib_runtime/utils/file/get_files.gd")
+const SELF = preload("uid://2kt1rv8kqr3u") #! resolve UtilR.Files.GetFiles
 
 const GDIGNORE = ".gdignore"
 const GODOT_CACHE_DIR = "res://.godot/"

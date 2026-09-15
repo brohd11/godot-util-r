@@ -1,7 +1,7 @@
 #! namespace UtilR.Files class GetFilesAsync
 
-const SELF = preload("uid://ctsugodrtg3rc") # get_files_async.gd
-const UFile = preload("uid://bl33psa06nv1e") #! resolve ALibRuntime.Utils.UFile.Methods
+const SELF = preload("uid://r6odl3pgmbp8") #! resolve UtilR.Files.GetFilesAsync
+const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.URFile
 
 var _found_files:= PackedStringArray()
 

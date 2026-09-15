@@ -46,6 +46,20 @@ static func get_all_nodes_of_type(node:Node, type:Variant):
 	
 
 
+#region Deprecated
+# move to PackedScene
+static func make_scene_local(node:Node):
+	if node.scene_file_path == "":
+		return
+	var editor_interface = Engine.get_singleton("EditorInterface")
+	if not is_instance_valid(editor_interface):
+		return
+	var edited_scene_root = editor_interface.get_edited_scene_root()
+	node.scene_file_path = ""
+	recursive_set_owner(node, node, edited_scene_root)
+
+
+
 static func connect_signal(callable:Callable, _signal:Signal):
 	if not _signal.is_connected(callable):
 		_signal.connect(callable)
@@ -59,16 +73,6 @@ static func get_signal_callable(object:Object, signal_name:StringName, callable_
 		var callable = data.get("callable") as Callable
 		if callable and callable.get_method() == callable_name:
 			return callable
-
-static func make_scene_local(node:Node):
-	if node.scene_file_path == "":
-		return
-	var editor_interface = Engine.get_singleton("EditorInterface")
-	if not is_instance_valid(editor_interface):
-		return
-	var edited_scene_root = editor_interface.get_edited_scene_root()
-	node.scene_file_path = ""
-	recursive_set_owner(node, node, edited_scene_root)
 
 
 static func has_static_method_compat(method:String, script:Object) -> bool:
@@ -94,3 +98,5 @@ static func has_static_method_compat(method:String, script:Object) -> bool:
 				return true
 	
 	return false
+
+#endregion
