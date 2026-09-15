@@ -29,7 +29,8 @@ options:
 exports:
   -
     source: "res://addons/addon_lib/util_r"
-    export_folder: "util-r{{version=util_r}}/util_r"
+    export_name: "util-r{{version=util_r}}"
+    export_folder: "addons/addon_lib/util_r"
     exclude:
       directories:
         - "res://addons/addon_lib/util_r/_export_ignore"
