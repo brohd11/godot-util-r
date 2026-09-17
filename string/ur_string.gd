@@ -405,7 +405,7 @@ static func is_string_or_string_name(text:String):
 		text = text.trim_prefix("&")
 	return (text.begins_with("'") and text.ends_with("'")) or (text.begins_with('"') and text.ends_with('"'))
 
-static func get_string_map(text:String, _mode:StringMap.Mode=StringMap.Mode.FULL, print_err:=false) -> StringMap:
+static func get_string_map(text:String, _mode:StringMap.Mode=StringMap.Mode.FULL, print_err:=false):
 	return StringMap.create(text, _mode, print_err)
 
 
