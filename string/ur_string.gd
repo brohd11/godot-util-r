@@ -62,7 +62,7 @@ static func rfind_index_safe(text: String, what: String, from: int = -1) -> int:
 	var actual_from = min(limit, max_valid_start)
 	return text.rfind(what, actual_from)
 
-static func get_member_access_front(text:String, string_map=null):
+static func get_member_access_front(text:String, string_map:StringMap=null):
 	var dot_idx = text.find(".")
 	if dot_idx > -1:
 		if text.find("(") > -1:
@@ -83,7 +83,7 @@ static func get_member_access_front(text:String, string_map=null):
 		return text.substr(0, dot_idx)
 	return text
 
-static func get_member_access_back(text:String, string_map=null):
+static func get_member_access_back(text:String, string_map:StringMap=null):
 	var dot_idx = text.rfind(".")
 	if dot_idx > -1:
 		if text.find("(") > -1:
@@ -104,7 +104,7 @@ static func get_member_access_back(text:String, string_map=null):
 		return text.substr(dot_idx + 1)
 	return text
 
-static func trim_member_access_front(text:String, string_map=null):
+static func trim_member_access_front(text:String, string_map:StringMap=null):
 	var dot_idx = text.find(".")
 	if dot_idx > -1:
 		if text.find("(") > -1:
@@ -125,7 +125,7 @@ static func trim_member_access_front(text:String, string_map=null):
 		return text.substr(dot_idx + 1)
 	return text
 
-static func trim_member_access_back(text:String, string_map=null):
+static func trim_member_access_back(text:String, string_map:StringMap=null):
 	var dot_idx = text.rfind(".")
 	if dot_idx > -1:
 		if text.find("(") > -1:
@@ -146,7 +146,7 @@ static func trim_member_access_back(text:String, string_map=null):
 		return text.substr(0, dot_idx)
 	return text
 
-static func split_member_access(text:String, string_map=null):
+static func split_member_access(text:String, string_map:StringMap=null):
 	if string_map == null:
 		string_map = StringMap.create(text)
 	var member_parts = []
@@ -177,7 +177,7 @@ static func split_member_access(text:String, string_map=null):
 	return member_parts
 
 
-static func string_safe_count(text:String, what:String, from:int=0, to:int=0, string_map=null):
+static func string_safe_count(text:String, what:String, from:int=0, to:int=0, string_map:StringMap=null):
 	if string_map == null:
 		string_map = get_string_map(text)
 	var count = 0
@@ -190,7 +190,7 @@ static func string_safe_count(text:String, what:String, from:int=0, to:int=0, st
 		idx = text.find(what, idx + 1)
 	return count
 
-static func string_safe_find(text:String, find:String, start:=0, string_map=null):
+static func string_safe_find(text:String, find:String, start:=0, string_map:StringMap=null):
 	if string_map == null:
 		string_map = get_string_map(text)
 	var idx = -1
@@ -199,7 +199,7 @@ static func string_safe_find(text:String, find:String, start:=0, string_map=null
 		idx = text.find(find, idx + 1)
 	return idx
 
-static func string_safe_rfind(text:String, find:String, start:=-1, string_map=null):
+static func string_safe_rfind(text:String, find:String, start:=-1, string_map:StringMap=null):
 	if string_map == null:
 		string_map = get_string_map(text)
 	var idx = -1
@@ -260,7 +260,7 @@ static func string_safe_split(text:String, delim:String, allow_empty:=false, ski
 	return valid_parts
 
 
-static func string_safe_split_multi(text:String, delims:Array, allow_empty:=false, skip_brackets:=false, string_map=null):
+static func string_safe_split_multi(text:String, delims:Array, allow_empty:=false, skip_brackets:=false, string_map:StringMap=null):
 	if string_map == null:
 		string_map = StringMap.create(text)
 	
@@ -319,7 +319,7 @@ static func string_safe_split_multi(text:String, delims:Array, allow_empty:=fals
 	return valid_parts
 
 
-static func remove_comment(text:String, string_safe:=false, string_map=null):
+static func remove_comment(text:String, string_safe:=false, string_map:StringMap=null):
 	if not string_safe:
 		return text.get_slice("#", 0)
 	else:
@@ -405,7 +405,7 @@ static func is_string_or_string_name(text:String):
 		text = text.trim_prefix("&")
 	return (text.begins_with("'") and text.ends_with("'")) or (text.begins_with('"') and text.ends_with('"'))
 
-static func get_string_map(text:String, _mode:StringMap.Mode=StringMap.Mode.FULL, print_err:=false):
+static func get_string_map(text:String, _mode:StringMap.Mode=StringMap.Mode.FULL, print_err:=false) -> StringMap:
 	return StringMap.create(text, _mode, print_err)
 
 

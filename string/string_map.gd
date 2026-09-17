@@ -1,5 +1,6 @@
 #! namespace UtilR.Strings class StringMap
 
+const StringMap = preload("uid://btml0a8r6vbbn") #! resolve UtilR.Strings.StringMap
 const UString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.URString
 
 const BRACKETS = { "(": ")", "[": "]", "{": "}" }
@@ -8,11 +9,22 @@ enum Mode {
 	STRING,
 }
 
-static func create(text:String, _mode:Mode=Mode.FULL, print_err:bool=false):
-	if ClassDB.class_exists("StringMapNative"):
-		return ClassDB.class_call_static("StringMapNative", "create", text, _mode, print_err)
-	else:
+static func create(text:String, _mode:Mode=Mode.FULL, print_err:bool=false) -> StringMap:
+	
+	if not ClassDB.class_exists("StringMapNative"):
 		return new(text, _mode, print_err)
+	else:
+		# this is on average faster than just gdscript. Occasionally, gd is quicker.
+		var smn = ClassDB.class_call_static("StringMapNative", "create", text, _mode, print_err)
+		var map:StringMap = new(text, _mode, print_err, false)
+		map.string_mask = smn.string_mask
+		map.string_map = smn.string_map
+		map.quote_map = smn.quote_map
+		map.bracket_map = smn.bracket_map
+		map.has_errors = smn.has_errors
+		map.comment_mask = smn.comment_mask
+		
+		return map
 
 ## Copy of text that was parsed.
 var string:String
@@ -23,7 +35,7 @@ var string_map:Dictionary
 ## A dictionary mapping a quote's index to its matching partner's index.
 var quote_map: Dictionary
 ## A dictionary mapping each bracket's index to the index of its matching partner.
-var bracket_map: Dictionary[int, int]
+var bracket_map: Dictionary
 ## A flag to indicate if any parsing errors (like mismatched brackets) occurred.
 var has_errors: bool = false
 ## Select full scan or only string mask
@@ -32,10 +44,11 @@ var mode:Mode
 var comment_mask:PackedByteArray
 
 
-func _init(text:String, _mode:Mode=Mode.FULL, print_err:=false) -> void:
+func _init(text:String, _mode:Mode=Mode.FULL, print_err:=false, parse:=true) -> void:
 	string = text
 	mode = _mode
-	_parse(text, print_err)
+	if parse:
+		_parse(text, print_err)
 
 func _parse(text: String, print_err:=false):
 	var text_length = text.length()
