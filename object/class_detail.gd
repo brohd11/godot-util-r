@@ -27,16 +27,21 @@ static var initialized := false
 static func connect_fs_signal():
 	if initialized:
 		return
-	initialized = true
+	# Populate before any editor check: the registry is needed at runtime too, where there is no
+	# EditorInterface and no filesystem_changed signal to ever fill it in.
+	_build_global_class_registry()
 	if not Engine.is_editor_hint():
+		initialized = true
 		return
 	var editor_interface = Engine.get_singleton("EditorInterface")
 	if not is_instance_valid(editor_interface):
+		# Not ready yet during editor startup. Leave initialized false so a later lookup retries
+		# and still gets the filesystem_changed connection.
 		return
 	var fs = editor_interface.get_resource_filesystem()
 	if not fs.filesystem_changed.is_connected(_build_global_class_registry):
-		_build_global_class_registry()
 		fs.filesystem_changed.connect(_build_global_class_registry)
+	initialized = true
 
 static func _build_global_class_registry():
 	global_class_registry = get_all_global_class_paths()
