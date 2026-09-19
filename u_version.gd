@@ -1,4 +1,4 @@
-#! namespace UtilR class URVersion
+#! namespace UtilR class UVersion
 
 static var _version_info:= {}
 

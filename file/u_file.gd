@@ -1,4 +1,4 @@
-#! namespace UtilR.Files class URFile
+#! namespace UtilR.Files class UFile
 
 const IGNORE_FILES = [".gitignore", ".gitattributes", ".gitmodules", ".git"]
 

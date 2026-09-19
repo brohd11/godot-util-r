@@ -1,6 +1,6 @@
-#! namespace UtilR.Objects class URClassDetail
+#! namespace UtilR.Objects class UClassDetail
 
-const URString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.URString
+const UString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.UString
 
 enum IncludeInheritance{
 	NONE,
@@ -327,11 +327,11 @@ static func get_member_info_by_path_expr(script:GDScript, member_name):
 	var _call = member_name
 
 	if member_name.find(".") > -1:
-		var first_script_name = URString.get_member_access_front(member_name)
+		var first_script_name = UString.get_member_access_front(member_name)
 		var first_script_path = get_global_class_path(first_script_name)
 		if first_script_path != "":
 			script = load(first_script_path)
-			_call = URString.trim_member_access_front(member_name)
+			_call = UString.trim_member_access_front(member_name)
 	
 	var ex = Expression.new()
 	var err = ex.parse(_call)
@@ -463,7 +463,7 @@ static func get_script_from_property_info(data:Dictionary, parent_script:GDScrip
 			return load(_class)
 		else:
 			if not ClassDB.class_exists(_class):
-				var trimmed = URString.get_member_access_front(_class) # load the global class
+				var trimmed = UString.get_member_access_front(_class) # load the global class
 				var path = get_global_class_path(trimmed)
 				if path != "":
 					return load(path)
@@ -490,7 +490,7 @@ static func get_script_from_property_info(data:Dictionary, parent_script:GDScrip
 	#var var_declaration = script_source.substr(var_declaration_idx, script_source.find("\n", var_declaration_idx) - var_declaration_idx)
 	#if var_declaration.find(";") > -1:
 		#var_declaration = var_declaration.get_slice(";", 0)
-	#var var_data = URString.get_var_name_and_type_hint_in_line(var_declaration) # moved to GDScriptParser.MemberParse
+	#var var_data = UString.get_var_name_and_type_hint_in_line(var_declaration) # moved to GDScriptParser.MemberParse
 	#if var_data != null:
 		#var type = var_data[1]
 		#print("DOING DEEP SEARCH::", property_name,"::" ,type)

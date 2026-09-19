@@ -1,6 +1,6 @@
 #! namespace UtilR.Resources.Read class Tscn
 
-const URFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.URFile
+const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.UFile
 
 
 static func check_root(file_path:String, valid_types:Array) -> bool:
@@ -29,7 +29,7 @@ static func get_root_type(file_path:String, recursive:=false):
 	return ""
 
 static func get_root_line(file_path:String):
-	var file = URFile.get_file_access(file_path)
+	var file = UFile.get_file_access(file_path)
 	if file:
 		while not file.eof_reached():
 			var line = file.get_line()
@@ -39,7 +39,7 @@ static func get_root_line(file_path:String):
 	return ""
 
 static func get_resource_line(file_path:String, resource_id:String):
-	var file = URFile.get_file_access(file_path)
+	var file = UFile.get_file_access(file_path)
 	if file:
 		var id_string = ' id="%s"' % resource_id
 		while not file.eof_reached():
@@ -72,7 +72,7 @@ static func _get_slice_from_line(line:String, slice_string:String, second_slice:
 
 
 static func get_root_script_path(file_path:String):
-	var file = URFile.get_file_access(file_path)
+	var file = UFile.get_file_access(file_path)
 	if not file:
 		return ""
 	var scripts = {}

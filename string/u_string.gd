@@ -1,4 +1,4 @@
-#! namespace UtilR.Strings class URString
+#! namespace UtilR.Strings class UString
 
 const INDENTIFIER_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 const NUMBERS = "0123456789"

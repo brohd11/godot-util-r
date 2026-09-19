@@ -1,11 +1,11 @@
 #! namespace UtilR.Resources.Read class Gd
 
-const URString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.URString
-const URFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.URFile
+const UString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.UString
+const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.UFile
 
 
 static func get_class_name(path:String):
-	var file = URFile.get_file_access(path)
+	var file = UFile.get_file_access(path)
 	if file:
 		var check = check_file_for(file, "class_name ")
 		if check:
@@ -15,7 +15,7 @@ static func get_class_name(path:String):
 	return ""
 
 static func get_extends(path:String):
-	var file = URFile.get_file_access(path)
+	var file = UFile.get_file_access(path)
 	if file:
 		var check = check_file_for(file, "extends ")
 		if check:
@@ -25,7 +25,7 @@ static func get_extends(path:String):
 	return ""
 
 static func get_is_tool(path:String):
-	var file = URFile.get_file_access(path)
+	var file = UFile.get_file_access(path)
 	if file:
 		var check = check_file_for(file, "@tool")
 		if check:
@@ -36,7 +36,7 @@ static func get_is_tool(path:String):
 static func check_file_for(file:FileAccess, string:String, lines:=5, return_code:=true):
 	for i in range(lines):
 		var line = file.get_line()
-		var code = URString.strip_comment(line)
+		var code = UString.strip_comment(line)
 		if code.contains(string):
 			if return_code:
 				return code

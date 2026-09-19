@@ -1,7 +1,7 @@
 #! namespace UtilR.Files class GetFilesAsync
 
 const SELF = preload("uid://r6odl3pgmbp8") #! resolve UtilR.Files.GetFilesAsync
-const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.URFile
+const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.UFile
 
 var _found_files:= PackedStringArray()
 

@@ -1,4 +1,4 @@
-#! namespace UtilR class UROs
+#! namespace UtilR class UOs
 
 const LINUX = "Linux"
 const MAC = "macOS"

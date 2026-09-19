@@ -1,7 +1,7 @@
 #! namespace UtilR.Strings class StringMap
 
 const StringMap = preload("uid://btml0a8r6vbbn") #! resolve UtilR.Strings.StringMap
-const UString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.URString
+const UString = preload("uid://dce8d0wuh35gs") #! resolve UtilR.Strings.UString
 
 const BRACKETS = { "(": ")", "[": "]", "{": "}" }
 enum Mode {
