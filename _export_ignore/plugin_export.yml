@@ -1,7 +1,7 @@
-export_root: "res://addons/addon_lib/util_r/_export_ignore/exports"
+export_root: "res://addons/_lib/util_r/_export_ignore/exports"
 plugin_folder: "UtilR{{version=util_r}}"
-pre_script: "res://addons/addon_lib/util_r/_export_ignore/pre_post_export.gd"
-post_script: "res://addons/addon_lib/util_r/_export_ignore/pre_post_export.gd"
+pre_script: "res://addons/_lib/util_r/_export_ignore/pre_post_export.gd"
+post_script: "res://addons/_lib/util_r/_export_ignore/pre_post_export.gd"
 build_require: []
 compile_require: []
 options:
@@ -28,12 +28,12 @@ options:
     parse_tres: {}
 exports:
   -
-    source: "res://addons/addon_lib/util_r"
+    source: "res://addons/_lib/util_r"
     export_name: "util-r{{version=util_r}}"
-    export_folder: "addons/addon_lib/util_r"
+    export_folder: "addons/_lib/util_r"
     exclude:
       directories:
-        - "res://addons/addon_lib/util_r/_export_ignore"
+        - "res://addons/_lib/util_r/_export_ignore"
       file_extensions: []
       files: []
     other_transfers: []
@@ -42,4 +42,4 @@ exports:
       parse_gd: {}
       parse_tscn: {}
       parse_tres: {}
-    remote_dir: "res://addons/addon_lib/util_r/src/remote"
+    remote_dir: "res://addons/_lib/util_r/src/remote"
