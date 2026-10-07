@@ -3,6 +3,7 @@
 class_name UtilR
 
 const Files = preload("uid://cnsiv7rj3g8wb") # res://addons/_lib/util_r/_ns/util_r/files.gd
+const Inputs = preload("uid://bt0ba6u03uwog") # res://addons/_lib/util_r/_ns/util_r/inputs.gd
 const Nodes = preload("uid://cs708na5u8ewk") # res://addons/_lib/util_r/_ns/util_r/nodes.gd
 const Objects = preload("uid://ceolwxn77o1s4") # res://addons/_lib/util_r/_ns/util_r/objects.gd
 const Profile = preload("uid://c0lybytv7d284") # res://addons/_lib/util_r/_ns/util_r/profile.gd

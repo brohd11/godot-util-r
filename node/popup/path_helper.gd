@@ -1,5 +1,5 @@
 extends PopupMenu
-#! namespace UtilR.Nodes.Popups class PathHelper
+#! namespace UtilR.Nodes.PopupMenus class PathHelper
 
 const UTexture = preload("uid://cp6d2gyih02s2") #! resolve UtilR.Resources.UTexture
 

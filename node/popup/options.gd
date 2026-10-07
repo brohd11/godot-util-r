@@ -1,8 +1,8 @@
-#! namespace UtilR.Nodes.Popups class Options
+#! namespace UtilR.Nodes.PopupMenus class Options
 
-const SELF = preload("uid://dxdxq2n3imf4q") #! resolve UtilR.Nodes.Popups.Options
+const SELF = preload("uid://dxdxq2n3imf4q") #! resolve UtilR.Nodes.PopupMenus.Options
 
-const PathHelper = preload("uid://ba5x2r7gyvmej") #! resolve UtilR.Nodes.Popups.PathHelper
+const PathHelper = preload("uid://ba5x2r7gyvmej") #! resolve UtilR.Nodes.PopupMenus.PathHelper
 const Params = PathHelper.ParamKeys
 
 var _dict:Dictionary = {}
