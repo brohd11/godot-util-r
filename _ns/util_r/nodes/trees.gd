@@ -1,4 +1,5 @@
 # This file is auto-generated. Do not edit.
 
 const AltLineColor = preload("uid://bgfj0lf3e1btg") # res://addons/_lib/util_r/node/tree/alt_line_color.gd
+const FileTreeHelperBase = preload("uid://bma4204fvtvtx") # res://addons/_lib/util_r/node/tree/file_tree_helper_base.gd
 const UTree = preload("uid://1gwputufojp6") # res://addons/_lib/util_r/node/tree/u_tree.gd
