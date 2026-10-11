@@ -5,4 +5,5 @@ const PrintRich = preload("uid://63vmnsxwd142") # res://addons/_lib/util_r/strin
 const StringMap = preload("uid://btml0a8r6vbbn") # res://addons/_lib/util_r/string/string_map.gd
 const Token = preload("uid://g53o13r3v1j0") # res://addons/_lib/util_r/string/token.gd
 const UName = preload("uid://b8sil7xrxxs20") # res://addons/_lib/util_r/string/u_name.gd
+const URegex = preload("uid://d0rbf4as6kpns") # res://addons/_lib/util_r/string/u_regex.gd
 const UString = preload("uid://dce8d0wuh35gs") # res://addons/_lib/util_r/string/u_string.gd

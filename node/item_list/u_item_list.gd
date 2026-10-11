@@ -1,6 +1,6 @@
 #! namespace UtilR.Nodes.ItemLists class UItemList
 
-const AltColor = preload("res://addons/_lib/brohd/alib_runtime/node_utils/item_list/alternate_color.gd")
+const AltColor = preload("uid://c8aj4ewv3q553") #! resolve UtilR.Nodes.ItemLists.AltLineColor
 
 
 static func replace_panel_stylebox_margin(item_list:ItemList, margin:int=0, only_right:=true):
