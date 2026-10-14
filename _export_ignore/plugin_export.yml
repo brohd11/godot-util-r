@@ -1,7 +1,7 @@
 export_root: "res://addons/_lib/util_r/_export_ignore/exports"
 plugin_folder: "UtilR{{version=util_r}}"
-pre_script: "res://addons/_lib/util_r/_export_ignore/pre_post_export.gd"
-post_script: "res://addons/_lib/util_r/_export_ignore/pre_post_export.gd"
+pre_script: ""
+post_script: ""
 build_require: []
 compile_require: []
 options:
