@@ -11,6 +11,7 @@ const Profile = preload("uid://c0lybytv7d284") # res://addons/_lib/util_r/_ns/ut
 const Resources = preload("uid://brsaiqr82pys8") # res://addons/_lib/util_r/_ns/util_r/resources.gd
 const Signals = preload("uid://btg4iwtwthb2f") # res://addons/_lib/util_r/_ns/util_r/signals.gd
 const Strings = preload("uid://l7jie4tudtgu") # res://addons/_lib/util_r/_ns/util_r/strings.gd
+const Test = preload("uid://cxtcpegrgjb5i") # res://addons/_lib/util_r/_ns/util_r/test.gd
 const UNode = preload("uid://bnf4h0107r8b4") # res://addons/_lib/util_r/src/node/u_node.gd
 const UOs = preload("uid://dppsxjnth11uc") # res://addons/_lib/util_r/src/u_os.gd
 const UVersion = preload("uid://dn156lc18d1vt") # res://addons/_lib/util_r/src/u_version.gd
