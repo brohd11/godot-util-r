@@ -2,6 +2,7 @@
 
 class_name UtilR
 
+const Collections = preload("uid://dqa8d20umix3h") # res://addons/_lib/util_r/_ns/util_r/collections.gd
 const Files = preload("uid://cnsiv7rj3g8wb") # res://addons/_lib/util_r/_ns/util_r/files.gd
 const Inputs = preload("uid://bt0ba6u03uwog") # res://addons/_lib/util_r/_ns/util_r/inputs.gd
 const Nodes = preload("uid://cs708na5u8ewk") # res://addons/_lib/util_r/_ns/util_r/nodes.gd
