@@ -244,10 +244,13 @@ static func file_exists(path_or_uid:String, current_script:Script=null, print_er
 	return FileAccess.file_exists(path_or_uid)
 
 static func load_config_file(path:String):
+	if not FileAccess.file_exists(path):
+		printerr("Config file doesn't exist: %s" % path)
+		return
 	var config = ConfigFile.new()
 	var err = config.load(path)
 	if err != OK:
-		print(err)
+		printerr("Load config file error (%s): %s" % [error_string(err), path])
 		return
 	return config
 
