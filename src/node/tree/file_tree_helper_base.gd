@@ -1,6 +1,6 @@
 extends RefCounted
 #! namespace UtilR.Nodes.Trees class FileTreeHelperBase
-const UTree = preload("uid://byxrrav3r3afw") # u_tree.gd
+const UTree = preload("uid://1gwputufojp6") #! resolve UtilR.Nodes.Trees.UTree
 
 var tree_node:Tree = null
 var item_dict:= {}
