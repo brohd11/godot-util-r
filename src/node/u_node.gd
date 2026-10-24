@@ -2,6 +2,8 @@
 
 const BACKPORTED = 100
 
+const UEngine = preload("uid://d3ly5y4q2tx57") #! resolve UtilR.UEngine
+
 static func recursive_set_owner(node:Node, current_root:Node, new_root:Node) -> void:
 	if node.owner == current_root:
 		node.owner = new_root
@@ -51,8 +53,9 @@ static func get_all_nodes_of_type(node:Node, type:Variant):
 static func make_scene_local(node:Node):
 	if node.scene_file_path == "":
 		return
-	var editor_interface = Engine.get_singleton("EditorInterface")
+	var editor_interface = UEngine.get_editor_interface()
 	if not is_instance_valid(editor_interface):
+		push_error("Cannot make scene local")
 		return
 	var edited_scene_root = editor_interface.get_edited_scene_root()
 	node.scene_file_path = ""

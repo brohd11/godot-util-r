@@ -1,5 +1,7 @@
 #! namespace UtilR.Objects class QuickUndoRedo
 
+const UEngine = preload("uid://d3ly5y4q2tx57") #! resolve UtilR.UEngine
+
 var ur:UndoRedo
 
 func _init(undo_redo:UndoRedo):
@@ -8,8 +10,9 @@ func _init(undo_redo:UndoRedo):
 static func _get_undo_redo(_ur=null):
 	if is_instance_valid(_ur):
 		return _ur
-	if Engine.is_editor_hint() and Engine.has_singleton("EditorInterface"):
-		return Engine.get_singleton("EditorInterface").get_editor_undo_redo()
+	var ed_interface = UEngine.get_editor_interface()
+	if is_instance_valid(ed_interface):
+		return ed_interface.get_editor_undo_redo()
 	return null
 
 func property(action_name:String, object, property_name:StringName, new_val, prev_val):

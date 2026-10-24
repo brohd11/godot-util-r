@@ -1,14 +1,12 @@
 extends RefCounted
 #! namespace UtilR.Nodes.Trees class FileTreeHelperBase
+
 const UTree = preload("uid://1gwputufojp6") #! resolve UtilR.Nodes.Trees.UTree
 
 var tree_node:Tree = null
 var item_dict:= {}
 var data_dict:= {}
 var parent_item = null
-
-#var selected_items:= []
-#var selected_item_paths:= []
 
 var filtered_item_paths:= []
 
@@ -326,7 +324,6 @@ func _on_multi_selected(_item: TreeItem, _column: int, _selected: bool) -> void:
 func _set_folder_icon_img():
 	#folder_icon = EditorInterface.get_base_control().get_theme_icon("Folder", &"EditorIcons")
 	#folder_color = EditorInterface.get_base_control().get_theme_color("folder_icon_color", "FileDialog")
-	#ab_lib.ABTree.get_folder_icon_and_color()
 	pass
 
 func _set_folder_icon(_file_path, slice_item):

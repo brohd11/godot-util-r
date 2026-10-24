@@ -2,7 +2,7 @@ extends PopupMenu
 #! namespace UtilR.Nodes.PopupMenus class PathHelper
 
 const UTexture = preload("uid://cp6d2gyih02s2") #! resolve UtilR.Resources.UTexture
-
+const UEngine = preload("uid://d3ly5y4q2tx57") #! resolve UtilR.UEngine
 
 const ICON_DEFAULT_SIZE = Vector2(16,16)
 
@@ -187,9 +187,11 @@ static func _create_popup_item(_popup:PopupMenu, params:PopupMenuPathParams, tex
 			if icon is String:
 				icon = _get_icon(icon)
 			icon = icon as Texture2D
-			if icon.get_size() != ICON_DEFAULT_SIZE * EditorInterface.get_editor_scale():
+			
+			var scale:float = _get_editor_scale()
+			if icon.get_size() != ICON_DEFAULT_SIZE * scale:
 				#print("RESIZE")
-				var icon_size = 16 * EditorInterface.get_editor_scale()
+				var icon_size = 16 * scale
 				icon = UTexture.resize_texture(icon, icon_size)
 			if params.radio:
 				_popup.add_icon_radio_check_item(icon, text, id)
@@ -450,11 +452,21 @@ static func add_single_item(_popup:PopupMenu, popup_path:String, popup_data:Dict
 	return _parse_popup_menu_path(popup_params, id)
 
 static func set_popup_position(_popup:PopupMenu, offset:=Vector2i.ZERO):
-	offset = offset * EditorInterface.get_editor_scale()
+	offset = offset * _get_editor_scale()
 	_popup.position = DisplayServer.mouse_get_position() - offset
 
 static func _get_icon(icon_name:String, theme_type:String="EditorIcons"):
-	return EditorInterface.get_editor_theme().get_icon(icon_name, theme_type)
+	var ei = UEngine.get_editor_interface()
+	if not is_instance_valid(ei):
+		return null
+	return ei.get_editor_theme().get_icon(icon_name, theme_type)
+
+static func _get_editor_scale() -> float:
+	var ei = UEngine.get_editor_interface()
+	if not is_instance_valid(ei):
+		return 1.0
+	return ei.get_editor_scale()
+
 
 ### EXAMPLE
 #func _menu_pressed(btn_id:int, _popup:PopupMenu):   # example func for static parse

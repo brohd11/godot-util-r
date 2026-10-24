@@ -1,6 +1,7 @@
 #! namespace UtilR.Resources class UResource
 
 const UFile = preload("uid://bqfy5cvhth0m1") #! resolve UtilR.Files.UFile
+const UEngine = preload("uid://d3ly5y4q2tx57") #! resolve UtilR.UEngine
 
 static func ensure_fresh_load(resource:Resource, cache_hint:=ResourceLoader.CACHE_MODE_IGNORE_DEEP) -> Resource:
 	if not UFile.path_in_res(resource.resource_path):
@@ -21,9 +22,7 @@ static func save_resource_to_path(res:Resource,path:String, name_overide:String=
 static func load_or_get_icon(name_or_path:String):
 	if FileAccess.file_exists(name_or_path):
 		return load(name_or_path)
-	if not Engine.is_editor_hint():
-		return null
-	var editor_interface = Engine.get_singleton(&"EditorInterface")
+	var editor_interface = UEngine.get_editor_interface()
 	if is_instance_valid(editor_interface):
 		var theme = editor_interface.get_editor_theme()
 		if theme.has_icon(name_or_path, &"EditorIcons"):
