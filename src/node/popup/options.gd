@@ -7,6 +7,11 @@ const Params = PathHelper.ParamKeys
 
 var _dict:Dictionary = {}
 
+## `text` as one piece of a menu path: a slash in it (a model id, a file path) stays in the item
+## instead of starting a submenu. add_option("Recent/" + Options.escape("qwen/qwen3-8b"), ...)
+static func escape(text:String) -> String:
+	return PathHelper.escape(text)
+
 func is_empty() -> bool:
 	return _dict.is_empty()
 

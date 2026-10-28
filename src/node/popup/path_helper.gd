@@ -1,12 +1,16 @@
 extends PopupMenu
 #! namespace UtilR.Nodes.PopupMenus class PathHelper
 
+const SELF = preload("uid://ba5x2r7gyvmej") #! resolve UtilR.Nodes.PopupMenus.PathHelper
 const UTexture = preload("uid://cp6d2gyih02s2") #! resolve UtilR.Resources.UTexture
 const UEngine = preload("uid://d3ly5y4q2tx57") #! resolve UtilR.UEngine
 
 const ICON_DEFAULT_SIZE = Vector2(16,16)
 
 const BACKPORTED = 100
+
+const ESCAPED_SLASH = "\\/"
+const _SLASH_STAND_IN = "\u0001"
 
 var popup_items_dict:Dictionary = {}
 
@@ -111,7 +115,8 @@ static func _parse_popup_menu_path(params:PopupMenuPathParams, current_id, extra
 	var user_metadata = params.metadata
 	
 	
-	var slice_count = popup_menu_path.get_slice_count("/")
+	var slices = split_path(popup_menu_path)
+	var slice_count = slices.size()
 	var working_menu_path = ""
 	var parent_popup:PopupMenu = base_popup
 	
@@ -126,8 +131,8 @@ static func _parse_popup_menu_path(params:PopupMenuPathParams, current_id, extra
 		if i < tool_tip_array.size():
 			tool_tip = tool_tip_array[i]
 		
-		var slice = popup_menu_path.get_slice("/", i)
-		working_menu_path = working_menu_path.path_join(slice)
+		var slice = slices[i]
+		working_menu_path = join_path(working_menu_path, slice)
 		if  i == slice_count - 1: # THIS IS THE CLICKABLE
 			var sep_string = ParamKeys.get_seperator(slice)
 			if sep_string != null:
@@ -215,6 +220,8 @@ static func _create_popup_item(_popup:PopupMenu, params:PopupMenuPathParams, tex
 					_popup.set_item_checked(popup_index, true)
 			else:
 				_popup.add_item(text, id)
+		if params.disabled:
+			_popup.set_item_disabled(_popup.item_count - 1, true)
 		#if tool_tip:
 			#var popup_index = _popup.item_count - 1
 			#_popup.set_item_tooltip(popup_index, tool_tip)
@@ -222,6 +229,23 @@ static func _create_popup_item(_popup:PopupMenu, params:PopupMenuPathParams, tex
 
 static func _on_popup_hide(_popup): # if no mouse signal node, free _popup
 	_popup.queue_free()
+
+## A menu path's pieces: split on "/", where an escaped slash (\/) stays in its piece.
+static func split_path(path:String) -> PackedStringArray:
+	var pieces = path.replace(ESCAPED_SLASH, _SLASH_STAND_IN).split("/")
+	for i in range(pieces.size()):
+		pieces[i] = pieces[i].replace(_SLASH_STAND_IN, "/")
+	return pieces
+
+## `text` as one piece of a menu path: its slashes stay in the item's text.
+static func escape(text:String) -> String:
+	return text.replace("/", ESCAPED_SLASH)
+
+## `path` (already escaped) with the item `text` added under it.
+static func join_path(path:String, text:String) -> String:
+	if path == "":
+		return escape(text)
+	return path + "/" + escape(text)
 
 class ParamKeys:
 	const ICON = &"ICON"
@@ -231,6 +255,7 @@ class ParamKeys:
 	const METADATA = &"METADATA"
 	const RADIO = &"RADIO"
 	const RADIO_IS_CHECKED = &"RADIO_IS_CHECKED"
+	const DISABLED = &"DISABLED"
 	const ID = &"ID"
 	const PRIORITY = "PRIORITY"
 	const DEFAULT_PRIORITY = 1000
@@ -285,7 +310,8 @@ class ParamKeys:
 				if not is_instance_valid(submenu):
 					continue
 				if submenu.is_ancestor_of(_popup) or submenu == _popup:
-					menu_path = parent.get_item_text(i).path_join(menu_path)
+					var piece = SELF.escape(parent.get_item_text(i))
+					menu_path = piece if menu_path == "" else piece + "/" + menu_path
 					icons.push_front(parent.get_item_icon(i))
 					icon_colors.push_front(parent.get_item_icon_modulate(i))
 					break
@@ -295,7 +321,7 @@ class ParamKeys:
 		if _popup.is_item_separator(idx):
 			menu_path = add_separator({}, _name, menu_path)
 		else:
-			menu_path = menu_path.path_join(_name)
+			menu_path = SELF.join_path(menu_path, _name)
 		
 		data[ICON] = icons
 		data[ICON_COLOR] = icon_colors
@@ -315,6 +341,7 @@ class PopupMenuPathParams:
 	var metadata:Dictionary = {}
 	var radio:= false
 	var radio_is_checked:=false
+	var disabled:=false
 	
 	func _init(_popup_menu_path, _base_popup, _callable, _popup_items_dict, popup_data=null) -> void:
 		popup_menu_path = clean_menu_path(_popup_menu_path)
@@ -336,6 +363,8 @@ class PopupMenuPathParams:
 				radio = value
 			elif key == ParamKeys.RADIO_IS_CHECKED:
 				radio_is_checked = value
+			elif key == ParamKeys.DISABLED:
+				disabled = value
 			elif key == ParamKeys.METADATA:
 				if value is not Dictionary:
 					print("Metadata must be dictionary for popup: %s" % _popup_menu_path)
@@ -346,14 +375,14 @@ class PopupMenuPathParams:
 	
 	
 	static func clean_menu_path(path):
-		if path.ends_with("/"):
+		if path.ends_with("/") and not path.ends_with(ESCAPED_SLASH):
 			path = path.erase(path.length()-1)
 		if path.begins_with("/"):
 			path = path.erase(0)
 		return path
 	
 	func even_array_sizes():
-		var slice_count = popup_menu_path.get_slice_count("/")
+		var slice_count = SELF.split_path(popup_menu_path).size()
 		var arrays = [
 			icon_array,
 			icon_color_array,
@@ -436,9 +465,7 @@ static func _create_popup_items_dict(_popup:PopupMenu, dict:Dictionary, path="")
 		if not is_instance_valid(submenu):
 			continue
 		var text = _popup.get_item_text(i)
-		var popup_path = text
-		if path != "":
-			popup_path = path.path_join(text)
+		var popup_path = join_path(path, text)
 		dict[popup_path] = submenu
 		_create_popup_items_dict(submenu, dict, popup_path)
 
@@ -453,7 +480,10 @@ static func add_single_item(_popup:PopupMenu, popup_path:String, popup_data:Dict
 
 static func set_popup_position(_popup:PopupMenu, offset:=Vector2i.ZERO):
 	offset = offset * _get_editor_scale()
-	_popup.position = DisplayServer.mouse_get_position() - offset
+	var mouse = DisplayServer.mouse_get_position()
+	if _popup.is_inside_tree() and _popup.get_parent().get_window().gui_embed_subwindows:
+		mouse = Vector2i(_popup.get_parent().get_window().get_mouse_position())
+	_popup.position = mouse - offset
 
 static func _get_icon(icon_name:String, theme_type:String="EditorIcons"):
 	var ei = UEngine.get_editor_interface()

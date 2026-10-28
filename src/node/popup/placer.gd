@@ -14,6 +14,8 @@ var popup:PopupMenu
 var mouse_helper:MouseHelper
 
 var hide_popup_with_timer:bool = true
+## Where the popup goes while shown. Unset: the window's first child.
+var popup_parent:Node
 
 var _custom_id_pressed_callable:Callable
 
@@ -46,7 +48,8 @@ func display_popup(options, center_popup:=false, position_overide=null):
 	PathHelper.parse_dict_static(options, popup, _popup_id_pressed, mouse_helper)
 	popup.reset_size()
 	
-	var popup_position = DisplayServer.mouse_get_position()
+	# The mouse as the window the popup opens in sees it.
+	var popup_position = mouse_popup_position(popup_parent if is_instance_valid(popup_parent) else self)
 	if center_popup:
 		var offset = _get_popup_offset()
 		offset.x = 0
@@ -125,7 +128,7 @@ func _get_popup_offset():
 	return Vector2i(15, size_per_item * 0.5)
 
 func _set_popup_parent():
-	var target_parent = get_window().get_child(0)
+	var target_parent = popup_parent if is_instance_valid(popup_parent) else get_window().get_child(0)
 	if popup.get_parent() == null:
 		target_parent.add_child(popup)
 	elif popup.get_window() != get_window():
@@ -156,10 +159,18 @@ func get_double_click():
 		return false
 	return true
 
+## Positions are in popup coordinates: the embedder's canvas when the window embeds its
+## subwindows (a game, by default), the screen when popups are their own windows (the editor).
 static func get_centered_control_position(control:Control):
-	var button_pos = control.global_position + Vector2(control.size.x / 2 , 0)
-	return get_window_offset_position(control, button_pos)
+	return Vector2i(control.get_screen_transform() * Vector2(control.size.x / 2, 0))
 
+## `position`, global in the control's canvas, in popup coordinates.
 static func get_window_offset_position(control:Control, position:Vector2i):
-	var window_pos = UWindow.get_window_global_position(control.get_window(), false)
-	return window_pos + position
+	return Vector2i(control.get_screen_transform() * (control.get_global_transform().affine_inverse() * Vector2(position)))
+
+## The mouse in popup coordinates for a popup shown from `node`'s window.
+static func mouse_popup_position(node:Node) -> Vector2i:
+	var window = node.get_window()
+	if window.gui_embed_subwindows:
+		return Vector2i(window.get_mouse_position())
+	return DisplayServer.mouse_get_position()
