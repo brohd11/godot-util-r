@@ -30,7 +30,7 @@ static func create(text:String, _mode:Mode=Mode.FULL, print_err:bool=false) -> S
 var string:String
 ## A mask where 1 means "inside a string" and 0 means "outside".
 var string_mask: PackedByteArray
-## A dictionary mapping start index of each string to the strings content.
+## A dictionary mapping start index of each string to the strings content, raw: escapes kept as written.
 var string_map:Dictionary
 ## A dictionary mapping a quote's index to its matching partner's index.
 var quote_map: Dictionary
@@ -59,9 +59,9 @@ func _parse(text: String, print_err:=false):
 	var bracket_stack = []
 	var in_comment = false
 	var in_string = false
+	var in_triple_quote = false
 	var quote_char = ""
 	var string_start_index = -1
-	var current_string = ""
 	
 	var i = -1 # for easy indexing
 	while i + 1 < text_length:
@@ -77,21 +77,30 @@ func _parse(text: String, print_err:=false):
 			if _char == "\\":
 				if i + 1 < text_length:
 					string_mask[i + 1] = 1
-				i += 1
-			elif _char == quote_char:
+					i += 1
+			elif _char == quote_char and (not in_triple_quote or
+					(i + 2 < text_length and text[i + 1] == quote_char and text[i + 2] == quote_char)):
+				var delimiter_length = 3 if in_triple_quote else 1
+				var content_start = string_start_index + delimiter_length
+				string_map[string_start_index] = text.substr(content_start, i - content_start)
+				for j in range(1, delimiter_length):
+					string_mask[i + j] = 1
+				i += delimiter_length - 1
 				in_string = false
+				in_triple_quote = false
 				quote_map[string_start_index] = i
 				quote_map[i] = string_start_index
-				string_map[string_start_index] = current_string
-				current_string = ""
-				continue
-			current_string += _char
 		else: # not in_string
 			if _char == '"' or _char == "'":
 				in_string = true
 				quote_char = _char
 				string_start_index = i
 				string_mask[i] = 1
+				in_triple_quote = i + 2 < text_length and text[i + 1] == _char and text[i + 2] == _char
+				if in_triple_quote:
+					string_mask[i + 1] = 1
+					string_mask[i + 2] = 1
+					i += 2
 			elif _char == "#":
 				in_comment = true
 				comment_mask[i] = 1

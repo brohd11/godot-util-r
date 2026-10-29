@@ -5,8 +5,13 @@ extends SceneTree
 const TestRunner = preload("res://addons/_lib/util_r/src/test/test_runner.gd")
 
 
-# _initialize, not _init: suites may await frames, which needs this tree to be the main loop.
+# Deferred: root enters the tree only after _initialize returns, and suites that add nodes need it
+# there. Suites may also await frames, which needs this tree to be the main loop.
 func _initialize() -> void:
+	_run.call_deferred()
+
+
+func _run() -> void:
 	var report = await TestRunner.run_files(TestRunner.find_suites("res://addons/_lib/util_r/_export_ignore/test"))
 	for s in report.suites:
 		print("[%s] %s" % ["PASS" if s.passed else "FAIL", s.path])
