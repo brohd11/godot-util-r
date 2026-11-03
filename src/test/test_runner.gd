@@ -1,7 +1,7 @@
 #! namespace UtilR.Test class TestRunner
 ## Runs `*_test.gd` suites. A suite exposes an entry func (run / run_test / run_tests, static or not)
 ## returning {result: failure count, output: Array}; a `success` bool is still accepted. Shared by
-## the editor console's `test` and PackageExporter's test CI, so both judge a suite the same way.
+## the editor console's `test` and gdpackage's test CI, so both judge a suite the same way.
 
 const GetFiles = preload("uid://2kt1rv8kqr3u") #! resolve UtilR.Files.GetFiles
 
