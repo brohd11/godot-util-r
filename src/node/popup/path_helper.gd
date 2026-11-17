@@ -7,8 +7,6 @@ const UEngine = preload("uid://d3ly5y4q2tx57") #! resolve UtilR.UEngine
 
 const ICON_DEFAULT_SIZE = Vector2(16,16)
 
-const BACKPORTED = 100
-
 const ESCAPED_SLASH = "\\/"
 const _SLASH_STAND_IN = "\u0001"
 
@@ -412,8 +410,7 @@ class MouseHelper:
 		if selected_node is PopupMenu:
 			selected_node.popup_hide.connect(stop_timer)
 			if callable == null:
-				if BACKPORTED >= 4:
-					timer_elapsed.connect(hide_popup)
+				timer_elapsed.connect(hide_popup)
 			else:
 				timer_elapsed.connect(callable)
 		else:
