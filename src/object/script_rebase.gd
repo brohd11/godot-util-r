@@ -33,6 +33,7 @@ static func build(source_path:String, base:Script, only_if_suffix:="") -> GDScri
 		target = target.substr(1, target.length() - 2)
 	if only_if_suffix.is_empty() or target.ends_with(only_if_suffix):
 		source = source.substr(0, found.get_start(1)) + '"%s"' % base.resource_path + source.substr(found.get_end(1))
+	source = _absolute_preloads(source, source_path.get_base_dir())
 
 	var script:GDScript = GDScript.new()
 	script.source_code = source
@@ -43,6 +44,18 @@ static func build(source_path:String, base:Script, only_if_suffix:="") -> GDScri
 		printerr("ScriptRebase - failed to compile %s (%s)" % [source_path, error_string(compiled.result)])
 		return null
 	return script
+
+
+## Makes relative preload paths absolute against dir. Godot 4.4/4.5 resolve them against the
+## script's gdscript:// path, ignoring set_path_cache. Only the string changes, so lines survive.
+static func _absolute_preloads(source:String, dir:String) -> String:
+	var re := RegEx.create_from_string("preload\\(\\s*([\"'])(\\.\\.?/[^\"'\\n]*)\\1")
+	var out := ""
+	var at := 0
+	for m in re.search_all(source):
+		out += source.substr(at, m.get_start(2) - at) + dir.path_join(m.get_string(2)).simplify_path()
+		at = m.get_end(2)
+	return out + source.substr(at)
 
 
 static func _fail(source_path:String, reason:String) -> GDScript:
